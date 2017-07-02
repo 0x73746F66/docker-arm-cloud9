@@ -4,6 +4,11 @@ MAINTAINER Christopher Langton <chris@devopsatscale.com.au>
 ARG PASSWD=changeme
 ARG AUTH=c9:ide
 ARG PORT=8080
+ARG APP_PORT=3000
+
+ENV AUTH ${AUTH}
+ENV PORT ${PORT}
+ENV APP_PORT ${APP_PORT}
 
 # Install dependencies
 RUN apt-get update && apt-get install --yes \
@@ -48,9 +53,9 @@ RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 #Expose ports: Note dont use port 80 - node is not run as root
-EXPOSE $PORT
-EXPOSE 3000
+EXPOSE ${PORT}
+EXPOSE ${APP_PORT}
 
 # Setup entrypoint
 USER cloud9ide
-CMD ["/home/cloud9ide/.c9/node/bin/node","/home/cloud9ide/cloud9/server.js","--auth $AUTH","--listen 0.0.0.0","--port $PORT","-w /workspace"]
+CMD ["/home/cloud9ide/.c9/node/bin/node","/home/cloud9ide/cloud9/server.js","--auth","$AUTH","--listen","0.0.0.0","--port","$PORT","-w","/workspace"]
