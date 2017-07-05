@@ -26,7 +26,7 @@ RUN ln -s /usr/bin/python2.7 /usr/bin/python
 
 # Add cloud9ide user
 RUN useradd --create-home --shell /bin/bash cloud9ide
-RUN echo "cloud9ide:$PASSWD" | chpasswd
+RUN echo "cloud9ide:${PASSWD}" | chpasswd
 
 # Install cloud9ide
 RUN runuser -l cloud9ide -c 'git clone https://github.com/c9/core.git /home/cloud9ide/cloud9'
@@ -58,4 +58,4 @@ EXPOSE ${APP_PORT}
 
 # Setup entrypoint
 USER cloud9ide
-CMD ["/home/cloud9ide/.c9/node/bin/node","/home/cloud9ide/cloud9/server.js","--auth","$AUTH","--listen","0.0.0.0","--port","$PORT","-w","/workspace"]
+ENTRYPOINT ["/home/cloud9ide/.c9/node/bin/node","/home/cloud9ide/cloud9/server.js","--auth",${AUTH},"--listen","0.0.0.0","--port",${PORT},"-w","/workspace"]
